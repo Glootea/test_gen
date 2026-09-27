@@ -1,0 +1,35 @@
+{
+    "$schema": "schema.json",
+    "blocks": [
+        {
+            "count": 3,
+            "questions": [
+                "What is the capital of France?",
+                "What is the capital of France?2",
+                "What is the capital of France?3",
+                "What is the capital of France?4",
+                "What is the capital of France?5",
+                "What is the capital of France?6",
+                "What is the capital of France?7",
+                {
+                    "q": "What is the capital of France?",
+                    "a": "Paris"
+                }
+            ],
+            "images": [
+                {
+                    "i": [
+                        "/images/a.png"
+                    ],
+                    "a": "dfs"
+                },
+                {
+                    "i": [
+                        "/images/b.png"
+                    ],
+                    "a": "dfs2"
+                }
+            ]
+        }
+    ]
+}

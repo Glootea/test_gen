@@ -1,0 +1,7 @@
+[package]
+name = "test_gen_package"
+version = "1.0.0"
+entrypoint = "generate_test.typ"
+authors = ["Glootea"]
+license = "MIT"
+description = "Generate tests based on json schema"

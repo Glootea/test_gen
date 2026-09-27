@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "test generator schema",
+  "title": "Test generator schema",
+  "description": "A schema for generating tests with questions, images and answers",
+  "type": "object",
+  "required": [
+    "blocks"
+  ],
+  "properties": {
+    "blocks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "count",
+          "questions"
+        ],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Количество вопросов в блоке"
+          },
+          "questions": {
+            "type": "array",
+            "description": "Список вопросов в блоке",
+            "minContains": 1,
+            "items": {
+              "type": [
+                "string",
+                "object"
+              ],
+              "required": [
+                "q"
+              ],
+              "properties": {
+                "q": {
+                  "type": "string",
+                  "description": "Текст вопроса"
+                },
+                "a": {
+                  "type": "string",
+                  "description": "Текст ответа"
+                }
+              }
+            }
+          },
+          "images": {
+            "type": "array",
+            "format": "uri",
+            "items": {
+              "type": [
+                "string",
+                "object"
+              ],
+              "description": "Ссылка на изображение / путь до изображения",
+              "required": [
+                "i"
+              ],
+              "properties": {
+                "i": {
+                  "type": [
+                    "string",
+                    "array"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "description": "Путь до изображения"
+                  },
+                  "description": "Путь до изображения"
+                },
+                "a": {
+                  "type": "string",
+                  "description": "Текст ответа для изображения"
+                }
+              }
+            },
+            "description": "Список изображений в блоке"
+          }
+        }
+      },
+      "required": [
+        "count",
+        "questions"
+      ]
+    }
+  }
+}
