@@ -17,8 +17,11 @@
 
   if type(questionContent) == dictionary {
     content += questionContent.q + ": "
-    if showAnswerFromText {
+    content += linebreak()
+    if showAnswerFromText == false {
       content += linebreak()
+    }
+    if showAnswerFromText {
       content += text("Ответ: " + questionContent.a, red)
       content += linebreak()
     }
