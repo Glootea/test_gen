@@ -2,34 +2,40 @@
     "$schema": "schema.json",
     "blocks": [
         {
-            "count": 3,
+            "count": 1,
             "questions": [
-                "What is the capital of France?",
-                "What is the capital of France?2",
                 "What is the capital of France?3",
                 "What is the capital of France?4",
-                "What is the capital of France?5",
-                "What is the capital of France?6",
-                "What is the capital of France?7",
                 {
                     "q": "What is the capital of France?",
                     "a": "Paris"
-                }
-            ],
-            "images": [
-                {
-                    "i": [
-                        "/images/a.png"
-                    ],
-                    "a": "dfs"
                 },
                 {
-                    "i": [
-                        "/images/b.png"
-                    ],
-                    "a": "dfs2"
+                    "q": "What is the capital of France2?",
+                    "a": "Paris"
                 }
             ]
+        },
+        {
+            "count": 3,
+            "questions": [
+                "What is the capital of France?"
+            ],
+            "images": {
+                "pattern": [
+                    "images/a-%d.png",
+                    "images/a-%d-1.png"
+                ],
+                "imageCount": 2,
+                "relativeWidths": [
+                    0.4,
+                    0.3
+                ],
+                "answers": {
+                    "1": "Answer 1",
+                    "2": "Answer 2"
+                }
+            }
         }
     ]
 }

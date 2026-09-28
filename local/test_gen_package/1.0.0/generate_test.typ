@@ -2,21 +2,22 @@
 #import "generate_variant.typ": generateVariant
 #import "state_monad.typ": bind, next-seed, pure, with-seed
 #import "loop_with_seed_monad.typ": map-m
-#set text(
-  size: 12pt,
-)
-
-#set page(margin: (
-  top: 0.25cm,
-  bottom: 0.25cm,
-  x: 0.25cm,
-))
 
 
 #let _questionCounter = counter("questionCounter")
 
 
-#let generate_test(jsonBytes, variantCount: 15, showAnswer: false, initialSeed: 0, pageConfig: page, readPath) = {
+#let generate_test(jsonBytes, variantCount: 15, showAnswer: false, initialSeed: 0, readPath) = {
+  set text(
+    size: 12pt,
+  )
+  set page(
+    margin: (
+      top: 0.5cm,
+      left: 0.5cm,
+    ),
+  )
+
   let jsonContent = json(jsonBytes)
   let blocks = parseBlocks(jsonContent)
   map-m(range(variantCount), i => with-seed(seed => {

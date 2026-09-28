@@ -47,36 +47,78 @@
             }
           },
           "images": {
-            "type": "array",
-            "format": "uri",
-            "items": {
-              "type": [
-                "string",
-                "object"
-              ],
-              "description": "Ссылка на изображение / путь до изображения",
-              "required": [
-                "i"
-              ],
-              "properties": {
-                "i": {
+            "anyOf": [
+              {
+                "type": "array",
+                "format": "uri",
+                "description": "Список изображений в блоке",
+                "items": {
                   "type": [
                     "string",
-                    "array"
+                    "object"
                   ],
-                  "items": {
-                    "type": "string",
+                  "description": "Ссылка на изображение / путь до изображения",
+                  "required": [
+                    "i"
+                  ]
+                },
+                "properties": {
+                  "i": {
+                    "type": [
+                      "string",
+                      "array"
+                    ],
+                    "items": {
+                      "type": "string",
+                      "description": "Путь до изображения"
+                    },
                     "description": "Путь до изображения"
                   },
-                  "description": "Путь до изображения"
-                },
-                "a": {
-                  "type": "string",
-                  "description": "Текст ответа для изображения"
+                  "a": {
+                    "type": "string",
+                    "description": "Текст ответа для изображения"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "required": [
+                  "pattern",
+                  "imageCount"
+                ],
+                "properties": {
+                  "pattern": {
+                    "type": [
+                      "array"
+                    ],
+                    "items": {
+                      "type": "string",
+                      "minContains": 1,
+                      "description": "Шаблоны для изображений. Например, [image/a-%d.png, image/b-%d.png] -> В одном вопросе: [image/a-1.png, image/b-1.png]..."
+                    }
+                  },
+                  "imageCount": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Количество изображений по данному шаблону (%d). Например, для шаблона [image/a-%d.png, image/b-%d.png] и imageCount = 3 будут сгенерированы изображения: [image/a-1.png, image/b-1.png], [image/a-2.png, image/b-2.png], [image/a-3.png, image/b-3.png]"
+                  },
+                  "relativeWidths": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "description": "Относительные ширины изображений в вопросе"
+                    }
+                  },
+                  "answers": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string",
+                      "description": "Ответы на вопросы с картинками. Например, для вопроса с картинками [image/a-1.png, image/b-1.png] нужно указать ответы как '1' : 'Ответ на вопрос 1'"
+                    }
+                  }
                 }
               }
-            },
-            "description": "Список изображений в блоке"
+            ]
           }
         }
       },

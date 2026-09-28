@@ -12,14 +12,17 @@
     let count = block.at(0)
     let questions = block.at(1)
 
-    let images = block.at(2, default: ())
-    let cartesianProduct = cartesian_product(questions, images)
+    let images = block.at(2)
+    let imagesContent = images.at("content", default: none)
+    let relativeWidths = images.at("relativeWidths", default: (1,))
+    let cartesianProduct = cartesian_product(questions, imagesContent)
     let selectedQuestions = pick(count, cartesianProduct, localSeed)
 
     for questionWithImage in selectedQuestions {
       _questionCounter.step()
       let contentForQuestion = getContentForQuestion(
         questionWithImage,
+        relativeWidths,
         _questionCounter,
         showAnswer,
         readPath,
