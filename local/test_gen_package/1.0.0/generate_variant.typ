@@ -15,12 +15,16 @@
 
     let images = block.at(2)
     let imagesContent = images.at("content", default: none)
-    let relativeWidths = images.at("relativeWidths", default: (1,))
+    let relativeWidths = images.at("relativeWidths")
+    // why default does not work???
+    if relativeWidths == none {
+      relativeWidths = (1,) * imagesContent.len()
+    }
+
     let cartesianProduct = cartesian_product(questions, imagesContent)
     let selectedQuestions = pick(count, cartesianProduct, seed)
 
     for questionWithImage in selectedQuestions {
-      _questionCounter.step()
       let contentForQuestion = getContentForQuestion(
         questionWithImage,
         relativeWidths,

@@ -55,7 +55,6 @@
         currentLineWidth = ()
       }
       currentLine.push(grid.cell(
-        stroke: 0.1pt,
         image(readPath(img), width: width, fit: "stretch"),
       ))
       currentLineWidth.push(width)
