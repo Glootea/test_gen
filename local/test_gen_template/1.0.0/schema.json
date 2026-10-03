@@ -42,6 +42,10 @@
                 "a": {
                   "type": "string",
                   "description": "Текст ответа"
+                },
+                "l": {
+                  "type": "string",
+                  "description": "Ссылка (link) на задание"
                 }
               }
             }
@@ -112,8 +116,25 @@
                   "answers": {
                     "type": "object",
                     "additionalProperties": {
-                      "type": "string",
-                      "description": "Ответы на вопросы с картинками. Например, для вопроса с картинками [image/a-1.png, image/b-1.png] нужно указать ответы как '1' : 'Ответ на вопрос 1'"
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "description": "Ответы на вопросы с картинками. Например, для вопроса с картинками [image/a-1.png, image/b-1.png] нужно указать ответы как '1' : 'Ответ на вопрос 1'"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "a": {
+                              "type": "string",
+                              "description": "Ответы на вопросы с картинками. Например, для вопроса с картинками [image/a-1.png, image/b-1.png] нужно указать ответы как '1' : 'Ответ на вопрос 1'"
+                            },
+                            "l": {
+                              "type": "string",
+                              "description": "Ссылка (link) на задание"
+                            }
+                          }
+                        }
+                      ]
                     }
                   }
                 }

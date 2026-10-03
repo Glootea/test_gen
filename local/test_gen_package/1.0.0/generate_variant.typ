@@ -6,7 +6,7 @@
 
 #let _questionCounter = counter("questionCounter")
 
-#let generateVariant(blocks, showAnswer, seed, readPath) = {
+#let generateVariant(blocks, showAnswer, showLink, seed, readPath) = {
   let content = []
   map-m(range(blocks.len()), i => with-seed(seed => {
     let block = blocks.at(i)
@@ -30,6 +30,7 @@
         relativeWidths,
         _questionCounter,
         showAnswer,
+        showLink,
         readPath,
       )
       contentForQuestion

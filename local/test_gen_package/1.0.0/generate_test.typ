@@ -7,7 +7,8 @@
 #let _questionCounter = counter("questionCounter")
 
 
-#let generate_test(jsonBytes, variantCount: 15, showAnswer: false, initialSeed: 0, readPath) = {
+
+#let generate_test(jsonBytes, variantCount: 15, showAnswer: false, showLink: false, initialSeed: 0, readPath) = {
   set text(
     size: 12pt,
   )
@@ -26,7 +27,7 @@
         #_questionCounter.update(c => 0)
         #(i + 1)В  Класс #h(5em) ФИО
         #linebreak()
-        #let p = generateVariant(blocks, showAnswer, seed, readPath)
+        #let p = generateVariant(blocks, showAnswer, showLink, seed, readPath)
         #p
         #linebreak()
       ],
