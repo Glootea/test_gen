@@ -3,9 +3,10 @@
 #let readPath(pathStr) = path(pathStr)
 
 #generate_test(
-  read("test.jsonc", encoding: none),
-  variantCount: 15,
-  showAnswer: true,
+  read("test.json", encoding: none),
+  variantCount: 20,
+  showAnswer: false,
+  showLink: false,
   readPath,
 )
 

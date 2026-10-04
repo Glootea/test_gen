@@ -25,7 +25,7 @@
     let result = block(
       [
         #_questionCounter.update(c => 0)
-        #(i + 1)В  Класс #h(5em) ФИО
+        #(i + 1)Вар  Класс #h(5em) ФИО
         #linebreak()
         #let p = generateVariant(blocks, showAnswer, showLink, seed, readPath)
         #p

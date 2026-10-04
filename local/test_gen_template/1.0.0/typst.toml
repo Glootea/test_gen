@@ -1,0 +1,13 @@
+[package]
+name = "test_gen_template"
+version = "1.0.0"
+entrypoint = "gen.typ"
+authors = ["Glootea"]
+license = "MIT"
+description = "Generate tests based on json schema"
+
+
+[template]
+name = "test_gen_template"
+path = "copy"
+entrypoint = "gen.typ"

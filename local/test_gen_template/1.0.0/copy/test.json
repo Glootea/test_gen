@@ -1,0 +1,21 @@
+{
+    "$schema": "schema.json",
+    "blocks": [
+        {
+            "count": 1,
+            "questions": [
+                "2+2="
+            ]
+        },
+        {
+            "count": 1,
+            "questions": [
+                {
+                    "q": "What is the capital of Great Britain?",
+                    "a": "London",
+                    "l": "https://en.wikipedia.org/wiki/London"
+                }
+            ]
+        }
+    ]
+}
