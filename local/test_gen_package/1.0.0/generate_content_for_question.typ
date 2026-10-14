@@ -21,13 +21,19 @@
 
 #let _generateText(content, questionContent, showAnswerFromText, showLinkFromText) = {
   if type(questionContent) == str {
-    content += questionContent + ": "
-    content += linebreak()
+    if questionContent != "" {
+      content += questionContent + ": "
+      content += linebreak()
+    } else {
+      content += v(-1em)
+    }
   }
 
   if type(questionContent) == dictionary {
-    content += questionContent.q + ": "
-    content += linebreak()
+    if questionContent.q != "" {
+      content += questionContent.q + ": "
+      content += linebreak()
+    }
     if showAnswerFromText == false {
       content += linebreak()
     }

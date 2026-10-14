@@ -6,36 +6,43 @@
 
 #let _questionCounter = counter("questionCounter")
 
+#let _variantHeader(variantNumber) = [
+  #_questionCounter.update(c => 0)
+  #(variantNumber + 1)Вар  Класс #h(5em) ФИО
+  #linebreak()
+]
 
-
-#let generate_test(jsonBytes, variantCount: 15, showAnswer: false, showLink: false, initialSeed: 0, readPath) = {
-  set text(
-    size: 12pt,
-  )
+#let generate_test(
+  jsonBytes,
+  variantCount: 15,
+  showAnswer: false,
+  showLink: false,
+  initialSeed: 0,
+  isMultipage: false,
+  readPath,
+) = {
   set page(
     margin: (
-      top: 0.5cm,
+      top: 0.2cm,
       left: 0.5cm,
     ),
   )
 
   let jsonContent = json(jsonBytes)
   let blocks = parseBlocks(jsonContent)
-  map-m(range(variantCount), i => with-seed(seed => {
-    let result = block(
+  map-m(range(variantCount), i => with-seed(seed => [
+    #block(
       [
-        #_questionCounter.update(c => 0)
-        #(i + 1)Вар  Класс #h(5em) ФИО
-        #linebreak()
-        #let p = generateVariant(blocks, showAnswer, showLink, seed, readPath)
-        #p
-        #linebreak()
+        #_variantHeader(i)
+        #generateVariant(blocks, showAnswer, showLink, seed, readPath)
+        // #linebreak()
       ],
-      breakable: false,
+      breakable: isMultipage,
     )
-
-    return result
-  }))(initialSeed)
+    #if isMultipage [
+      #pagebreak()
+    ]
+  ]))(initialSeed)
     .at(0)
     .join()
 }
