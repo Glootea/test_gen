@@ -8,70 +8,49 @@
 
 #let _showAnswerInImage(showAnswer) = showAnswer
 
-#let _showLinkInText(showLink, questionContent) = {
-  if showLink == false {
-    return false
-  }
-  return type(questionContent) == dictionary and questionContent.at("l", default: none) != none
-}
-
-#let _showLinkInImage(showLink) = showLink
-
-
-
-#let _generateText(content, questionContent, showAnswerFromText, showLinkFromText) = {
+#let _getQuestionTextForQuestion(questionContent) = {
   if type(questionContent) == str {
     if questionContent != "" {
-      content += questionContent + ": "
-      content += linebreak()
+      text(questionContent)
     } else {
-      content += v(-1em)
+      v(-1em)
     }
   }
 
   if type(questionContent) == dictionary {
     if questionContent.q != "" {
-      content += questionContent.q + ": "
-      content += linebreak()
-    }
-    if showAnswerFromText == false {
-      content += linebreak()
-    }
-    if showAnswerFromText {
-      content += text("Ответ: " + questionContent.a, red)
-      content += linebreak()
-    }
-    if showLinkFromText {
-      content += text("Ссылка: ", blue)
-      content += link(questionContent.l)
-      content += linebreak()
+      text(questionContent.q)
     }
   }
-  return content
 }
 
-#let _generateImage(content, imageContent, relativeWidths, showAnswer, showLink, readPath) = {
+
+#let _getImageForQuestion(imageContent, relativeWidths, readPath) = {
+  if imageContent == none {
+    return none
+  }
+
+  let imageContent = imageContent.at("image")
   if type(imageContent) == str {
-    content += image(readPath(imageContent))
-    content += linebreak()
+    image(readPath(imageContent))
+    linebreak()
   } else if type(imageContent) == array {
     let pageWidthWithMargins = page.width - page.margin.left
-    let images = imageContent.at(0)
     let widths = relativeWidths.map(w => w * 100% * pageWidthWithMargins)
 
     let currentLine = ()
     let currentLineWidth = ()
     let accWidth = 0%
-    for (i, img) in images.enumerate() {
+    for (i, img) in imageContent.enumerate() {
       let width = widths.at(i)
 
       if accWidth + width >= pageWidthWithMargins {
-        content += grid(
+        grid(
           columns: currentLineWidth,
           ..currentLine
         )
         accWidth = 0%
-        content += linebreak()
+        linebreak()
         currentLine = ()
         currentLineWidth = ()
       }
@@ -82,53 +61,61 @@
       accWidth += width
     }
     if currentLineWidth.len() > 0 {
-      content += grid(
+      grid(
         columns: currentLineWidth,
         ..currentLine
       )
     }
+  } else {
+    assert(false, message: "Unknown image content type: " + str(type(imageContent)))
   }
-
-  if imageContent != none and showAnswer {
-    let answerContent = imageContent.at(1)
-    if type(answerContent) == dictionary {
-      content += text("Ответ: " + answerContent.a, red)
-      if answerContent.at("l") != none and showLink {
-        content += linebreak()
-        content += text("Ссылка: ", blue)
-        content += link(answerContent.at("l"))
-      }
-    } else {
-      content += text("Ответ: " + answerContent, red)
-    }
-    // content += text("Ответ: " + imageContent.at(1), red)
-    content += linebreak()
-  }
-
-  return content
 }
 
+#let _getAnswerForQuestion(questionWithImage) = {
+  let (questionContent, imageContent) = questionWithImage
+  if type(imageContent) == dictionary {
+    return imageContent.at("answer", default: "no answer provided")
+    let answerContent = imageContent.at(1)
+    if type(answerContent) == dictionary {
+      return answerContent.a
+    } else {
+      return answerContent
+    }
+  }
+  if type(questionContent) == dictionary {
+    return questionContent.a
+  }
+
+  return none
+}
+
+#let _getLinkForQuestion(questionWithImage) = {
+  let (questionContent, imageContent) = questionWithImage
+  if type(questionContent) == dictionary {
+    return questionContent.at("l", default: none)
+  }
+  if type(imageContent) == dictionary {
+    return imageContent.at("l", default: none)
+  }
+  return none
+}
+
+
+
 #let getContentForQuestion(questionWithImage, relativeWidths, questionCount, showAnswer, showLink, readPath) = {
-  let content = [
-    #questionCount.step()
-    #context questionCount.display():
-  ]
   let (questionContent, imageContent) = questionWithImage
 
-  content = _generateText(content, questionContent, _showAnswerInText(showAnswer, imageContent), _showLinkInText(
-    showLink,
-    questionContent,
-  ))
-  content = context _generateImage(
-    content,
-    imageContent,
-    relativeWidths,
-    _showAnswerInImage(showAnswer),
-    _showLinkInImage(showLink),
-    readPath,
-  )
+  let content = context [
+    #questionCount.step()
+    #context questionCount.display():
+    #_getQuestionTextForQuestion(questionContent)
+    #_getImageForQuestion(imageContent, relativeWidths, readPath)
+  ]
 
-  return content
+  let answer = _getAnswerForQuestion(questionWithImage)
+  let link = _getLinkForQuestion(questionWithImage)
+
+  return ("content": content, "answer": answer, "link": link)
 }
 
 

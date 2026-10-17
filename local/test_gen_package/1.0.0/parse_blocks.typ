@@ -12,19 +12,19 @@
     let images = range(imageCount).map(i => {
       let qNum = str(i + 1)
       let answer = answers.at(qNum, default: none)
-      return (pattern.map(p => p.replace("%d", qNum)), answer)
+      return ("image": pattern.map(p => p.replace("%d", qNum)), "answer": answer)
     })
     return (relativeWidths: relativeWidths, content: images)
   } else if type(imagesRaw) == array {
     //
     if type(imagesRaw.at(0)) == string {
-      let content = imagesRaw.map(i => (i, none))
+      let content = imagesRaw.map(i => ("image": i, "answer": none))
       return (relativeWidths: relativeWidths, content: content)
     } else if type(imagesRaw.at(0)) == dictionary {
       let content = imagesRaw.map(img => {
         let i = img.at("i")
         let a = img.at("a", default: none)
-        return (i, a)
+        return ("image": i, "answer": a)
       })
       return (
         relativeWidths: relativeWidths,
@@ -44,7 +44,7 @@
     let questions = block.at("questions")
     let imagesRaw = block.at("images", default: none)
     let images = _processImages(imagesRaw)
-    result.insert(index, (count, questions, images))
+    result.insert(index, ("count": count, "questions": questions, "images": images))
   }
   return result
 }

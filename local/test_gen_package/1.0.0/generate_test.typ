@@ -8,7 +8,7 @@
 
 #let _variantHeader(variantNumber) = [
   #_questionCounter.update(c => 0)
-  #(variantNumber + 1)Вар  Класс #h(5em) ФИО
+  #(variantNumber)Вар  Класс #h(5em) ФИО
   #linebreak()
 ]
 
@@ -24,6 +24,7 @@
   set page(
     margin: (
       top: 0.2cm,
+      bottom: 0.2cm,
       left: 0.5cm,
     ),
   )
@@ -31,11 +32,11 @@
   let jsonContent = json(jsonBytes)
   let blocks = parseBlocks(jsonContent)
   map-m(range(variantCount), i => with-seed(seed => [
+    #let variantNumber = i + 1
     #block(
       [
-        #_variantHeader(i)
-        #generateVariant(blocks, showAnswer, showLink, seed, readPath)
-        // #linebreak()
+        #_variantHeader(variantNumber)
+        #generateVariant(variantNumber, blocks, showAnswer, showLink, seed, readPath)
       ],
       breakable: isMultipage,
     )

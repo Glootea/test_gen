@@ -6,14 +6,13 @@
 
 #let _questionCounter = counter("questionCounter")
 
-#let generateVariant(blocks, showAnswer, showLink, seed, readPath) = {
-  let content = []
-  map-m(range(blocks.len()), i => with-seed(seed => {
+#let generateVariant(variantNumber, blocks, showAnswer, showLink, seed, readPath) = {
+  let result = map-m(range(blocks.len()), i => with-seed(seed => {
     let block = blocks.at(i)
-    let count = block.at(0)
-    let questions = block.at(1)
+    let count = block.at("count")
+    let questions = block.at("questions")
 
-    let images = block.at(2)
+    let images = block.at("images")
     let imagesContent = images.at("content", default: none)
     let relativeWidths = images.at("relativeWidths")
     // why default does not work???
@@ -23,7 +22,7 @@
 
     let cartesianProduct = cartesian_product(questions, imagesContent)
     let selectedQuestions = pick(count, cartesianProduct, seed)
-
+    let questionsContent = ()
     for questionWithImage in selectedQuestions {
       let contentForQuestion = getContentForQuestion(
         questionWithImage,
@@ -33,9 +32,46 @@
         showLink,
         readPath,
       )
-      contentForQuestion
+      questionsContent = questionsContent + (contentForQuestion,)
     }
+    return questionsContent
   }))(seed)
     .at(0)
     .join()
+
+  for i in range(result.len()) {
+    let r = result.at(i)
+    let contentForQuestion = r.at("content")
+    let answerContent = r.at("answer")
+    let linkContent = r.at("link")
+
+    contentForQuestion
+    linebreak()
+
+    if showLink and linkContent != none {
+      text("Ссылка: " + linkContent, blue)
+      linebreak()
+    }
+  }
+
+  if showAnswer {
+    linebreak()
+    context text("Ответы на вариант " + str(variantNumber), size: text.size * 1.5, red)
+    let data = result
+      .enumerate()
+      .map(r => {
+        let index = r.at(0) + 1
+        let answer = r.at(1).at("answer")
+        ([#index], [#answer])
+      })
+      .join()
+
+    table(
+      ..data,
+      columns: (auto, 5fr),
+      fill: (x, y) => if calc.rem(y, 2) == 0 { gray.transparentize(70%) },
+    )
+  }
 }
+
+
